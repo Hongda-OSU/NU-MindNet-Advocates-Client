@@ -44,7 +44,6 @@ export const useDbData = (path) => {
   return [data, error];
 };
 
-// insert data to database
 export const useDbAdd = (path) => {
   const [result, setResult] = useState();
   const firebase = getFirebase();
@@ -62,7 +61,6 @@ export const useDbAdd = (path) => {
   return [addData, result];
 };
 
-// update data in database
 export const useDbUpdate = (path) => {
   const [result, setResult] = useState();
   const firebase = getFirebase();
@@ -79,7 +77,6 @@ export const useDbUpdate = (path) => {
   return [updateData, result];
 };
 
-// delete data from database
 export const useDbDelete = () => {
   const firebase = getFirebase();
   const database = getFirebaseDatabase(firebase);

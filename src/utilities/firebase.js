@@ -5,6 +5,7 @@ import { getStorage } from "firebase/storage";
 const firebaseConfig = {
   apiKey: "AIzaSyB5j-XGejYuKe2Nt-9VjHbaaDUHaVnqt58",
   authDomain: "nu-mindnet-client.firebaseapp.com",
+  databaseURL: "https://nu-mindnet-client-default-rtdb.firebaseio.com/",
   projectId: "nu-mindnet-client",
   storageBucket: "nu-mindnet-client.appspot.com",
   messagingSenderId: "605914428803",
