@@ -111,7 +111,7 @@ export const signInWithEmailPassword = (email, password) => {
     })
     .catch((err) => {
       console.log(err.code);
-      alert(err.code);
+      alert("Click \"Use Test Account\" to Sign In");
     });
 };
 
