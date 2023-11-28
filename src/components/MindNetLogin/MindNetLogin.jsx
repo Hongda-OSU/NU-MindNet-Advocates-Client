@@ -19,7 +19,7 @@ const pageContents = [
   {
     slogan: "Leveraging Data Analytics to Transform Mental Health Care and Patient Experiences",
     imageUrl:
-      "https://raw.githubusercontent.com/Hongda-OSU/PicGo-2.3.1/master/imgLaboratory-amico.svg",
+      "https://raw.githubusercontent.com/Hongda-OSU/PicGo-2.3.1/master/imgData%20analysis-pana.svg",
   },
   {
     slogan: "Empowering Therapists with Insights for Enhanced Patient Care and Holistic Wellness",
@@ -29,7 +29,7 @@ const pageContents = [
   {
     slogan: "Navigating Social Interactions to Promote Greater Wellness and Mental Health",
     imageUrl:
-      "https://raw.githubusercontent.com/Hongda-OSU/PicGo-2.3.1/master/imgadasdasdas.svg",
+      "https://raw.githubusercontent.com/Hongda-OSU/PicGo-2.3.1/master/imgEthnic%20friendship-cuate.svg",
   },
 ];
 
