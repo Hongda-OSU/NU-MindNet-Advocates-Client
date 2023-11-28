@@ -5,6 +5,7 @@ import {
   GoogleAuthProvider,
   onAuthStateChanged,
   signInWithPopup,
+  signInWithEmailAndPassword,
   signOut,
 } from "firebase/auth";
 import {
@@ -101,9 +102,26 @@ export const signInWithGoogle = () => {
   signInWithPopup(getAuth(firebase), new GoogleAuthProvider());
 };
 
-export const firebaseSignOut = () => {
+export const signInWithEmailPassword = (email, password) => {
   const firebase = getFirebase();
-  signOut(getAuth(firebase));
+  const auth = getAuth(firebase);
+  signInWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+      console.log(userCredential.user);
+    })
+    .catch((err) => {
+      console.log(err.code);
+      alert(err.code);
+    });
+};
+
+export const firebaseSignOut = async () => {
+  const auth = getAuth();
+  try {
+    await signOut(auth);
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 export const useAuthState = () => {
