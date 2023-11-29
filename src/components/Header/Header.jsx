@@ -4,10 +4,19 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
+import { firebaseSignOut } from "../../utilities/firebaseUtils";
 
 const Header = () => {
   const navigate = useNavigate();
-
+  const signout = () => {
+    firebaseSignOut()
+      .then(() => {
+        navigate("/nu-mindnet-login");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   return (
     <AppBar position="static">
       <Toolbar style={{ justifyContent: "space-between" }}>
@@ -16,7 +25,7 @@ const Header = () => {
             NU MindNet
           </Typography>
         </Button>
-        <Button color="inherit" onClick={() => navigate("/nu-mindnet-login")}>
+        <Button color="inherit" onClick={signout}>
           Log out
         </Button>
       </Toolbar>
