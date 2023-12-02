@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Container, Box } from "@mui/material";
-
+import Header from "../Header/Header";
 import PersonInfo from "../Questionnaire/PersonInfo";
 import Questions from "../Questionnaire/Questions";
 
@@ -15,7 +15,7 @@ const Questionnaire = () => {
   ]);
   const questions = [
     "Who do you think this person will most likely collaborate with on a project?",
-    "Which of the following people do you think this person would choose to travel with?"
+    "Which of the following people do you think this person would choose to travel with?",
   ];
 
   const handlePersonInputChange = (index, name, value) => {
@@ -38,10 +38,13 @@ const Questionnaire = () => {
   };
 
   const handleNext = () => {
-    const isAllFieldsFilled = people.every(person => 
-      person.name.trim() && person.gender.trim() && person.age.toString().trim()
+    const isAllFieldsFilled = people.every(
+      (person) =>
+        person.name.trim() &&
+        person.gender.trim() &&
+        person.age.toString().trim()
     );
-  
+
     if (isAllFieldsFilled) {
       setStep(2); // Go to the next step if every person has all fields filled
     } else {
@@ -68,37 +71,40 @@ const Questionnaire = () => {
     // Here you would send jsonData to your backend API
   };
   return (
-    <Container component="main" maxWidth="lg">
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "flex-start",
-          mt: 4,
-        }}
-      >
-        {step === 1 && (
-          <PersonInfo
-            people={people}
-            handleNext={handleNext}
-            handleAddPerson={handleAddPerson}
-            handleDeletePerson={handleDeletePerson}
-            handlePersonInputChange={handlePersonInputChange}
-          />
-        )}
+    <>
+      <Header />
+      <Container component="main" maxWidth="lg">
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "flex-start",
+            mt: 4,
+          }}
+        >
+          {step === 1 && (
+            <PersonInfo
+              people={people}
+              handleNext={handleNext}
+              handleAddPerson={handleAddPerson}
+              handleDeletePerson={handleDeletePerson}
+              handlePersonInputChange={handlePersonInputChange}
+            />
+          )}
 
-        {step === 2 && (
-          <Questions
-            people={people}
-            questions={questions}
-            currentQuestionIndex={currentQuestionIndex}
-            setCurrentQuestionIndex={setCurrentQuestionIndex}
-            handleBack={handleBack}
-            handleSubmit={handleSubmit}
-          />
-        )}
-      </Box>
-    </Container>
+          {step === 2 && (
+            <Questions
+              people={people}
+              questions={questions}
+              currentQuestionIndex={currentQuestionIndex}
+              setCurrentQuestionIndex={setCurrentQuestionIndex}
+              handleBack={handleBack}
+              handleSubmit={handleSubmit}
+            />
+          )}
+        </Box>
+      </Container>
+    </>
   );
 };
 

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { onValue, ref, update, remove } from "firebase/database";
+import { onValue, ref, update, remove, push } from "firebase/database";
 import {
   getAuth,
   GoogleAuthProvider,
@@ -9,7 +9,7 @@ import {
   signOut,
 } from "firebase/auth";
 import {
-  getFirebase,
+  getFirebaseApp,
   getFirebaseDatabase,
   getFirebaseStorage,
 } from "./firebase";
@@ -26,7 +26,7 @@ export const useDbData = (path) => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const firebase = getFirebase();
+    const firebase = getFirebaseApp();
     const database = getFirebaseDatabase(firebase);
 
     const unsubscribe = onValue(
@@ -47,7 +47,7 @@ export const useDbData = (path) => {
 
 export const useDbAdd = (path) => {
   const [result, setResult] = useState();
-  const firebase = getFirebase();
+  const firebase = getFirebaseApp();
   const database = getFirebaseDatabase(firebase);
 
   const addData = useCallback(
@@ -64,7 +64,7 @@ export const useDbAdd = (path) => {
 
 export const useDbUpdate = (path) => {
   const [result, setResult] = useState();
-  const firebase = getFirebase();
+  const firebase = getFirebaseApp();
   const database = getFirebaseDatabase(firebase);
   const updateData = useCallback(
     (value) => {
@@ -79,7 +79,7 @@ export const useDbUpdate = (path) => {
 };
 
 export const useDbDelete = () => {
-  const firebase = getFirebase();
+  const firebase = getFirebaseApp();
   const database = getFirebaseDatabase(firebase);
   const [result, setResult] = useState();
 
@@ -97,39 +97,55 @@ export const useDbDelete = () => {
   return [deleteNode, result];
 };
 
-export const signInWithGoogle = () => {
-  const firebase = getFirebase();
-  signInWithPopup(getAuth(firebase), new GoogleAuthProvider());
+export const signInWithGoogle = async () => {
+  const app = getFirebaseApp();
+  const auth = getAuth(app);
+  signInWithPopup(auth, new GoogleAuthProvider())
+    .then((result) => {
+      const credential = GoogleAuthProvider.credentialFromResult(result);
+      const token = credential.accessToken;
+      const user = result.user;
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      const email = error.customData.email;
+      const credential = GoogleAuthProvider.credentialFromError(error);
+    });
 };
 
-export const signInWithEmailPassword = (email, password) => {
-  const firebase = getFirebase();
-  const auth = getAuth(firebase);
+export const signInWithEmailPassword = async (email, password) => {
+  const app = getFirebaseApp();
+  const auth = getAuth(app);
   signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
       console.log(userCredential.user);
     })
     .catch((err) => {
       console.log(err.code);
-      alert("Click \"Use Test Account\" to Sign In");
+      alert('Click "Use Test Account" to Sign In');
     });
 };
 
 export const firebaseSignOut = async () => {
-  const auth = getAuth();
+  const app = getFirebaseApp();
+  const auth = getAuth(app);
   try {
     await signOut(auth);
   } catch (err) {
-    console.log(err);
+    throw err;
   }
 };
 
 export const useAuthState = () => {
-  const [user, setUser] = useState();
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const firebase = getFirebase();
-    const unsubscribe = onAuthStateChanged(getAuth(firebase), setUser);
+    const app = getFirebaseApp();
+    const auth = getAuth(app);
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+    });
 
     return () => unsubscribe();
   }, []);

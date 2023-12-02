@@ -1,10 +1,9 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import Layout from "../components/Header/Layout";
-import MindNetLogin from "../components/MindNetLogin/MindNetLogin";
 import { useAuthState } from "../utilities/firebaseUtils";
+import Login from "../components/Login/Login";
 import Homepage from "../components/pages/Homepage";
-import Result from "../components/pages/Result";
 import Questionnaire from "../components/pages/Questionnaire";
+import Result from "../components/Result/Result";
 
 const RouteDispatcher = () => {
   const [user] = useAuthState();
@@ -16,37 +15,16 @@ const RouteDispatcher = () => {
           path="/"
           element={
             user ? (
-              <Navigate replace to="/nu-mindnet-home" />
+              <Navigate replace to="home" />
             ) : (
-              <Navigate replace to="/nu-mindnet-login" />
+              <Navigate replace to="login" />
             )
           }
         />
-        <Route path="nu-mindnet-login" element={<MindNetLogin />} />
-        <Route
-          path="nu-mindnet-home"
-          element={
-            <Layout>
-              <Homepage />
-            </Layout>
-          }
-        />
-        <Route
-          path="questionnaire"
-          element={
-            <Layout>
-              <Questionnaire />
-            </Layout>
-          }
-        />
-        <Route
-          path="results"
-          element={
-            <Layout>
-              <Result />
-            </Layout>
-          }
-        />
+        <Route path="login" element={<Login />} />
+        <Route path="home" element={<Homepage />} />
+        <Route path="questionnaire" element={<Questionnaire />} />
+        <Route path="result" element={<Result />} />
       </Routes>
     </BrowserRouter>
   );
