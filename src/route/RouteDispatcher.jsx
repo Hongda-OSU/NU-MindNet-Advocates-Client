@@ -6,7 +6,11 @@ import Questionnaire from "../components/pages/Questionnaire";
 import Result from "../components/Result/Result";
 
 const RouteDispatcher = () => {
-  const [user] = useAuthState();
+  const [user, loading] = useAuthState();
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <BrowserRouter>

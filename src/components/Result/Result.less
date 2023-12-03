@@ -1,0 +1,133 @@
+@font-face {
+  font-family: "Gilroy";
+  src: url("https://raw.githubusercontent.com/Hongda-OSU/PicGo-2.3.1/master/imgGilroy-Regular.ttf");
+  font-display: swap;
+}
+
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@700&display=swap");
+
+.result {
+  width: 100%;
+  height: calc(100vh - 64px);
+  display: flex;
+  flex-flow: row nowrap;
+  overflow: hidden;
+  background-color: rgba(255, 255, 255, 1);
+}
+
+.result-sidebar {
+  display: flex;
+  flex-flow: column nowrap;
+  flex: 0.15;
+  min-width: 288px;
+  overflow: auto;
+  border-right: 2px solid #e0e0e0;
+}
+
+.result-sidebar-title-container {
+  display: flex;
+  justify-content: center;
+}
+
+.result-sidebar-title {
+  color: black;
+  font-family: "Noto Sans JP", sans-serif;
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  white-space: nowrap;
+  overflow-wrap: break-word;
+}
+
+.result-sidebar-list-content span {
+  font-family: "Gilroy" !important;
+  font-weight: bold;
+  text-align: center;
+}
+
+.result-container {
+  display: flex;
+  flex-flow: column nowrap;
+  flex: 0.85;
+  overflow: auto;
+}
+
+.result-question-content-container {
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-flow: column nowrap;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.result-question-number {
+  color: black;
+  font-family: "Noto Sans JP", sans-serif;
+  font-size: 26px;
+  font-weight: bold;
+  text-align: left;
+  white-space: nowrap;
+  overflow-wrap: break-word;
+  margin: 10px 0 0 20px;
+}
+
+.result-question-content {
+  color: black;
+  font-family: "Gilroy", sans-serif;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: left;
+  white-space: wrap;
+  overflow-wrap: break-word;
+  margin: 15px 0 20px 40px;
+}
+
+.result-network-visualization-container {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+}
+
+.network-visualization-title {
+  color: black;
+  font-family: "Noto Sans JP", sans-serif;
+  font-size: 24px;
+  font-weight: bold;
+  text-align: left;
+  white-space: nowrap;
+  overflow-wrap: break-word;
+  margin-left: 20px;
+}
+
+.network-visualization {
+  display: flex;
+  flex-direction: row;
+}
+
+.network-visualization-image-container {
+  display: flex;
+  flex: 0.5;
+  flex-flow: column nowrap;
+}
+
+.network-visualization-image {
+  width: 640px;
+  height: 480px;
+  object-fit: contain;
+}
+
+.network-visualization-description {
+  color: grey;
+  font-family: "Gilroy", sans-serif;
+  font-size: 12px;
+  font-weight: bold;
+  text-align: left;
+  white-space: wrap;
+  overflow-wrap: break-word;
+  margin-left: 155px;
+}
+
+.result-network-explain-container {
+  display: flex;
+  flex: 0.5;
+}

@@ -8,7 +8,7 @@ import { firebaseSignOut } from "../../utilities/firebaseUtils";
 
 const Header = () => {
   const navigate = useNavigate();
-  
+
   const signout = () => {
     firebaseSignOut()
       .then(() => {
@@ -20,7 +20,7 @@ const Header = () => {
   };
 
   return (
-    <AppBar position="static">
+    <AppBar position="static" sx={{ backgroundColor: "#00008b" }}>
       <Toolbar style={{ justifyContent: "space-between" }}>
         <Button color="inherit" onClick={() => navigate("/home")}>
           <Typography variant="h6" component="div">

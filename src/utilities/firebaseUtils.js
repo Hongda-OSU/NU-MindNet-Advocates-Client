@@ -139,18 +139,20 @@ export const firebaseSignOut = async () => {
 
 export const useAuthState = () => {
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const app = getFirebaseApp();
     const auth = getAuth(app);
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
+      setLoading(false);
     });
 
     return () => unsubscribe();
   }, []);
 
-  return [user];
+  return [user, loading];
 };
 
 export const useProfile = () => {
