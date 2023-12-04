@@ -13,7 +13,7 @@ import InputAdornment from "@mui/material/InputAdornment";
 import FormControl from "@mui/material/FormControl";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import "./MindNetLogin.less";
+import "./Login.less";
 
 const pageContents = [
   {
@@ -42,7 +42,7 @@ const PreloadImages = () => {
   }, []);
 };
 
-const MindNetLogin = () => {
+const Login = () => {
   PreloadImages();
 
   const [currentPage, setCurrentPage] = useState(0);
@@ -74,35 +74,35 @@ const MindNetLogin = () => {
 
   useEffect(() => {
     if (user) {
-      navigate("/nu-mindnet-home");
+      navigate("/home");
     }
   }, [user, navigate]);
 
   return (
-    <div className="mindnet-login">
-      <div className="mindnet-login-container">
-        <section className="mindnet-login-section">
-          <div className="mindnet-login-icon-container">
+    <div className="login">
+      <div className="login-container">
+        <section className="login-section">
+          <div className="login-icon-container">
             <img
-              className="mindnet-login-icon"
+              className="login-icon"
               src="https://raw.githubusercontent.com/Hongda-OSU/PicGo-2.3.1/master/imgicon.svg"
             />
           </div>
-          <div className="mindnet-login-title-container">
-            <span className="mindnet-login-title-text purple">N</span>
-            <span className="mindnet-login-title-text purple last">U</span>
-            <span className="mindnet-login-title-text">M</span>
-            <span className="mindnet-login-title-text">I</span>
-            <span className="mindnet-login-title-text">N</span>
-            <span className="mindnet-login-title-text">D</span>
-            <span className="mindnet-login-title-text">N</span>
-            <span className="mindnet-login-title-text">E</span>
-            <span className="mindnet-login-title-text">T</span>
+          <div className="login-title-container">
+            <span className="login-title-text purple">N</span>
+            <span className="login-title-text purple last">U</span>
+            <span className="login-title-text">M</span>
+            <span className="login-title-text">I</span>
+            <span className="login-title-text">N</span>
+            <span className="login-title-text">D</span>
+            <span className="login-title-text">N</span>
+            <span className="login-title-text">E</span>
+            <span className="login-title-text">T</span>
           </div>
-          <div className="mindnet-login-content-container">
-            <FormControl className="mindnet-login-email-container">
+          <div className="login-content-container">
+            <FormControl className="login-email-container">
               <OutlinedInput
-                className="mindnet-login-email"
+                className="login-email"
                 type={"text"}
                 value={email}
                 placeholder={"Enter Email"}
@@ -119,9 +119,9 @@ const MindNetLogin = () => {
                 }
               />
             </FormControl>
-            <FormControl className="mindnet-login-password-container">
+            <FormControl className="login-password-container">
               <OutlinedInput
-                className="mindnet-login-password"
+                className="login-password"
                 type={showPassword ? "text" : "password"}
                 value={password}
                 placeholder={"Enter Password"}
@@ -143,10 +143,10 @@ const MindNetLogin = () => {
                 }
               />
             </FormControl>
-            <div className="mindnet-login-test-container">
+            <div className="login-test-container">
               <Button
                 variant="text"
-                className="mindnet-login-test-button"
+                className="login-test-button"
                 onClick={fillInTestAccount}
               >
                 Use Test Account
@@ -154,18 +154,18 @@ const MindNetLogin = () => {
             </div>
             <Button
               variant="contained"
-              className="mindnet-login-sign-in-button"
+              className="login-sign-in-button"
               onClick={() => signInWithEmailPassword(email, password)}
             >
               Sign In
             </Button>
-            <span className="mindnet-login-continue-with-text">
+            <span className="login-continue-with-text">
               Or continue with
             </span>
-            <div className="mindnet-login-other-sign-in-container">
+            <div className="login-other-sign-in-container">
               <Button
                 variant="contained"
-                className="mindnet-login-google-sign-in-button"
+                className="login-google-sign-in-button"
                 onClick={signInWithGoogle}
               >
                 <img
@@ -176,10 +176,10 @@ const MindNetLogin = () => {
             </div>
           </div>
         </section>
-        <section className="mindnet-slogan-section">
-          <div className="mindnet-fuzzy-glass-section">
+        <section className="slogan-section">
+          <div className="fuzzy-glass-section">
             <p
-              className={`mindnet-fuzzy-glass-slogan ${
+              className={`fuzzy-glass-slogan ${
                 fade ? "hidden-content" : ""
               }`}
             >
@@ -189,11 +189,11 @@ const MindNetLogin = () => {
               className={fade ? "hidden-content" : ""}
               src={pageContents[currentPage].imageUrl}
             />
-            <div className="mindnet-fuzzy-glass-three-dots">
+            <div className="fuzzy-glass-three-dots">
               {pageContents.map((_, index) => (
                 <span
                   key={index}
-                  className={`mindnet-fuzzy-glass-dot ${
+                  className={`fuzzy-glass-dot ${
                     index === currentPage ? "active" : ""
                   }`}
                 ></span>
@@ -206,4 +206,4 @@ const MindNetLogin = () => {
   );
 };
 
-export default MindNetLogin;
+export default Login;

@@ -8,19 +8,21 @@ import { firebaseSignOut } from "../../utilities/firebaseUtils";
 
 const Header = () => {
   const navigate = useNavigate();
+
   const signout = () => {
     firebaseSignOut()
       .then(() => {
-        navigate("/nu-mindnet-login");
+        navigate("/login");
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
       });
   };
+
   return (
-    <AppBar position="static">
+    <AppBar position="static" sx={{ backgroundColor: "#00008b" }}>
       <Toolbar style={{ justifyContent: "space-between" }}>
-        <Button color="inherit" onClick={() => navigate("/nu-mindnet-home")}>
+        <Button color="inherit" onClick={() => navigate("/home")}>
           <Typography variant="h6" component="div">
             NU MindNet
           </Typography>
