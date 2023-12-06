@@ -29,6 +29,34 @@ const test_data = {
   4: { degree: 2, closeness: 1, eigenvector: 0, reciprocity: 1 },
 };
 
+const test_image = {
+  0: [
+    "https://raw.githubusercontent.com/Hongda-OSU/PicGo-2.3.1/master/imgtest_directed_small.jpg",
+    "https://raw.githubusercontent.com/Hongda-OSU/PicGo-2.3.1/master/imgtest_directed_medium.jpg",
+    "https://raw.githubusercontent.com/Hongda-OSU/PicGo-2.3.1/master/imgtest_directed_large.jpg",
+  ],
+  1: [
+    "https://raw.githubusercontent.com/Hongda-OSU/PicGo-2.3.1/master/imgtest_undirected_small.jpg",
+    "https://raw.githubusercontent.com/Hongda-OSU/PicGo-2.3.1/master/imgtest_undirected_medium.jpg",
+    "https://raw.githubusercontent.com/Hongda-OSU/PicGo-2.3.1/master/imgtest_undirected_large.jpg",
+  ],
+  2: [
+    "https://raw.githubusercontent.com/Hongda-OSU/PicGo-2.3.1/master/imgtest_directed_small.jpg",
+    "https://raw.githubusercontent.com/Hongda-OSU/PicGo-2.3.1/master/imgtest_directed_medium.jpg",
+    "https://raw.githubusercontent.com/Hongda-OSU/PicGo-2.3.1/master/imgtest_directed_large.jpg",
+  ],
+  3: [
+    "https://raw.githubusercontent.com/Hongda-OSU/PicGo-2.3.1/master/imgtest_undirected_small.jpg",
+    "https://raw.githubusercontent.com/Hongda-OSU/PicGo-2.3.1/master/imgtest_undirected_medium.jpg",
+    "https://raw.githubusercontent.com/Hongda-OSU/PicGo-2.3.1/master/imgtest_undirected_large.jpg",
+  ],
+  4: [
+    "https://raw.githubusercontent.com/Hongda-OSU/PicGo-2.3.1/master/imgtest_directed_small.jpg",
+    "https://raw.githubusercontent.com/Hongda-OSU/PicGo-2.3.1/master/imgtest_directed_medium.jpg",
+    "https://raw.githubusercontent.com/Hongda-OSU/PicGo-2.3.1/master/imgtest_directed_large.jpg",
+  ],
+};
+
 const Result = () => {
   const levels = ["high", "medium", "low"];
 
@@ -42,9 +70,7 @@ const Result = () => {
     test_data[0].reciprocity
   );
 
-  const getLevelDescription = (level, criteria) => {
-    return criteria[levels[level]];
-  };
+  const getLevelDescription = (level, criteria) => criteria[levels[level]];
 
   const getColorByLevel = (level) => {
     switch (level) {
@@ -57,21 +83,14 @@ const Result = () => {
     }
   };
 
-  const IMAGE_RESULT = [
-    "https://raw.githubusercontent.com/Hongda-OSU/PicGo-2.3.1/master/imgtest_directed_small.jpg",
-    "https://raw.githubusercontent.com/Hongda-OSU/PicGo-2.3.1/master/imgtest_directed_medium.jpg",
-    "https://raw.githubusercontent.com/Hongda-OSU/PicGo-2.3.1/master/imgtest_directed_large.jpg",
-  ];
-
   const [resultIndex, setResultIndex] = useState(0);
-  const [resultImage, setResultImage] = useState(IMAGE_RESULT[0]);
+  const [resultImage, setResultImage] = useState(test_image[0][0]);
 
   const handleQuestionChange = (index) => {
-    const selectedQuestion = QUESTIONS[index];
-    setQuestion(selectedQuestion);
+    setQuestion(QUESTIONS[index]);
 
     setResultIndex(0);
-    setResultImage(IMAGE_RESULT[0]);
+    setResultImage(test_image[index][0]);
 
     const levels = test_data[index];
     setDegreeLevel(levels.degree);
@@ -83,7 +102,8 @@ const Result = () => {
   const handleVisualizationTabChange = (e, index) => {
     e.preventDefault();
     setResultIndex(index);
-    setResultImage(IMAGE_RESULT[index]);
+    const questionIndex = QUESTIONS.findIndex((q) => q === question);
+    setResultImage(test_image[questionIndex][index]);
   };
 
   return (
