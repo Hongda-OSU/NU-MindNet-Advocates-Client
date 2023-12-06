@@ -36,3 +36,9 @@ export const RECIPROCITY = {
     "You possess a medium level of reciprocity within your network, ranking in the middle third of all actors. You have a decent amount of mutual connections with other people, but there might still be room to establish new mutual relationships.",
   high: "You possess a high level of eigenvector centrality within your network, ranking in the top third of all actors. This position indicates that you are strongly connected to many other well-connected people in your network. You are very likely to be able to extend your influence beyond your immediate network through your connections to these key members.",
 };
+
+export const DESCRIPTIONS = [
+  "Academic collaboration network visualization",
+  "Academic collaboration network visualization based on gender",
+  "Academic collaboration network visualization based on age"
+]

@@ -1,10 +1,18 @@
 import { useState } from "react";
-import { List, ListItem, ListItemButton, ListItemText } from "@mui/material";
+import {
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemText,
+  Tabs,
+  Tab,
+} from "@mui/material";
 import { PhotoProvider, PhotoView } from "react-photo-view";
 import "react-photo-view/dist/react-photo-view.css";
 import Header from "../Header/Header";
 import {
   QUESTIONS,
+  DESCRIPTIONS,
   CLASSIFICATION_CRITERIA,
   DEGREES,
   CLOSENESS,
@@ -13,16 +21,69 @@ import {
 } from "../Data/constant";
 import "./Result.less";
 
+const test_data = {
+  0: { degree: 0, closeness: 1, eigenvector: 2, reciprocity: -1 },
+  1: { degree: 2, closeness: 2, eigenvector: 1, reciprocity: -1 },
+  2: { degree: 1, closeness: 0, eigenvector: 2, reciprocity: -1 },
+  3: { degree: 2, closeness: 0, eigenvector: 1, reciprocity: -1 },
+  4: { degree: 2, closeness: 1, eigenvector: 0, reciprocity: 1 },
+};
+
 const Result = () => {
+  const levels = ["high", "medium", "low"];
+
   const [question, setQuestion] = useState(QUESTIONS[0]);
-  const [degreeLevel, setDegreeLevel] = useState(0);
-  const [closenessLevel, setClosenessLevel] = useState(0);
-  const [eigenvectorLevel, setEigenvectorLevel] = useState(0);
-  const [reciprocityLevel, setReciprocityLevel] = useState(0);
+  const [degreeLevel, setDegreeLevel] = useState(test_data[0].degree);
+  const [closenessLevel, setClosenessLevel] = useState(test_data[0].closeness);
+  const [eigenvectorLevel, setEigenvectorLevel] = useState(
+    test_data[0].eigenvector
+  );
+  const [reciprocityLevel, setReciprocityLevel] = useState(
+    test_data[0].reciprocity
+  );
 
   const getLevelDescription = (level, criteria) => {
-    const levels = ["high", "medium", "low"];
     return criteria[levels[level]];
+  };
+
+  const getColorByLevel = (level) => {
+    switch (level) {
+      case "low":
+        return "#28a745";
+      case "medium":
+        return "#ffc107";
+      case "high":
+        return "#dc3545";
+    }
+  };
+
+  const IMAGE_RESULT = [
+    "https://raw.githubusercontent.com/Hongda-OSU/PicGo-2.3.1/master/imgtest_directed_small.jpg",
+    "https://raw.githubusercontent.com/Hongda-OSU/PicGo-2.3.1/master/imgtest_directed_medium.jpg",
+    "https://raw.githubusercontent.com/Hongda-OSU/PicGo-2.3.1/master/imgtest_directed_large.jpg",
+  ];
+
+  const [resultIndex, setResultIndex] = useState(0);
+  const [resultImage, setResultImage] = useState(IMAGE_RESULT[0]);
+
+  const handleQuestionChange = (index) => {
+    const selectedQuestion = QUESTIONS[index];
+    setQuestion(selectedQuestion);
+
+    setResultIndex(0);
+    setResultImage(IMAGE_RESULT[0]);
+
+    const levels = test_data[index];
+    setDegreeLevel(levels.degree);
+    setClosenessLevel(levels.closeness);
+    setEigenvectorLevel(levels.eigenvector);
+    setReciprocityLevel(levels.reciprocity);
+  };
+
+  const handleVisualizationTabChange = (e, index) => {
+    e.preventDefault();
+    setResultIndex(index);
+    setResultImage(IMAGE_RESULT[index]);
   };
 
   return (
@@ -50,7 +111,7 @@ const Result = () => {
                       boxShadow: "0 2px 7px rgba(0, 0, 0, 0.1)",
                       margin: "0 10px 0 10px",
                     }}
-                    onClick={() => setQuestion(QUESTIONS[index])}
+                    onClick={() => handleQuestionChange(index)}
                   >
                     <ListItemText
                       className="result-sidebar-list-content"
@@ -73,15 +134,25 @@ const Result = () => {
                 <span className="network-visualization-title">
                   Network Visualization Result
                 </span>
+                <div className="network-visualization-tab-container">
+                  <Tabs
+                    value={resultIndex}
+                    onChange={handleVisualizationTabChange}
+                  >
+                    <Tab label="Basic Result" disableRipple />
+                    <Tab label="Gender Result" disableRipple />
+                    <Tab label="Age Result" disableRipple />
+                  </Tabs>
+                </div>
                 <div className="network-visualization">
-                  <PhotoView src="https://raw.githubusercontent.com/Hongda-OSU/PicGo-2.3.1/master/imgtest_directed_small.jpg">
+                  <PhotoView src={resultImage}>
                     <img
                       className="network-visualization-image"
-                      src="https://raw.githubusercontent.com/Hongda-OSU/PicGo-2.3.1/master/imgtest_directed_small.jpg"
+                      src={resultImage}
                     />
                   </PhotoView>
                   <span className="network-visualization-description">
-                    Academic collaboration network visualization based on gender
+                    {DESCRIPTIONS[resultIndex]}
                   </span>
                 </div>
               </div>
@@ -89,30 +160,74 @@ const Result = () => {
                 <span className="result-explaination-title">
                   Visualization Explaination
                 </span>
-                <span className="network-visualization-explain">
-                  Based on the statistics (degree, closeness, eigenvector
-                  centrality, and reciprocity), we can calculate the values for
-                  these statistics and the rankings for all nodes in the
-                  network. We classify the level of centrality based on the
-                  percentile of the user node. Specifically, if the user ranks
-                  top ⅓, we classify it as high. Similar for medium and low.
+                <span className="result-explaination-criteria">
+                  {CLASSIFICATION_CRITERIA}
                 </span>
-                <span className="network-visualization-explain">
-                  Based on the statistics (degree, closeness, eigenvector
-                  centrality, and reciprocity), we can calculate the values for
-                  these statistics and the rankings for all nodes in the
-                  network. We classify the level of centrality based on the
-                  percentile of the user node. Specifically, if the user ranks
-                  top ⅓, we classify it as high. Similar for medium and low.
-                </span>
-                <span className="network-visualization-explain">
-                  Based on the statistics (degree, closeness, eigenvector
-                  centrality, and reciprocity), we can calculate the values for
-                  these statistics and the rankings for all nodes in the
-                  network. We classify the level of centrality based on the
-                  percentile of the user node. Specifically, if the user ranks
-                  top ⅓, we classify it as high. Similar for medium and low.
-                </span>
+                <div className="result-explaination-degree-container">
+                  <span className="result-explaination-degree-title">
+                    <span>Degree </span>
+                    <span
+                      style={{
+                        color: getColorByLevel(levels[degreeLevel]),
+                      }}
+                    >
+                      {levels[degreeLevel]}
+                    </span>
+                  </span>
+                  <span className="result-explaination-degree">
+                    {getLevelDescription(degreeLevel, DEGREES)}
+                  </span>
+                </div>
+                <div className="result-explaination-closeness-container">
+                  <span className="result-explaination-closeness-title">
+                    <span>Closeness </span>
+                    <span
+                      style={{
+                        color: getColorByLevel(levels[closenessLevel]),
+                      }}
+                    >
+                      {levels[closenessLevel]}
+                    </span>
+                  </span>
+                  <span className="result-explaination-closeness">
+                    {getLevelDescription(closenessLevel, CLOSENESS)}
+                  </span>
+                </div>
+                <div className="result-explaination-eigenvector-container">
+                  <span className="result-explaination-eigenvector-title">
+                    <span>Eigenvector Centrality </span>
+                    <span
+                      style={{
+                        color: getColorByLevel(levels[eigenvectorLevel]),
+                      }}
+                    >
+                      {levels[eigenvectorLevel]}
+                    </span>
+                  </span>
+                  <span className="result-explaination-eigenvector">
+                    {getLevelDescription(
+                      eigenvectorLevel,
+                      EIGENVECTOR_CENTRALITY
+                    )}
+                  </span>
+                </div>
+                {reciprocityLevel !== -1 && (
+                  <div className="result-explaination-reciprocity-container">
+                    <span className="result-explaination-reciprocity-title">
+                      <span>Reciprocity </span>
+                      <span
+                        style={{
+                          color: getColorByLevel(levels[reciprocityLevel]),
+                        }}
+                      >
+                        {levels[reciprocityLevel]}
+                      </span>
+                    </span>
+                    <span className="result-explaination-reciprocity">
+                      {getLevelDescription(reciprocityLevel, RECIPROCITY)}
+                    </span>
+                  </div>
+                )}
               </div>
             </div>
           </section>
