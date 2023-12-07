@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Container, Box } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 import Header from "../Header/Header";
 import PersonInfo from "../Questionnaire/PersonInfo";
 import Questions from "../Questionnaire/Questions";
-import {post} from "../http/http.service";
+import { post } from "../http/http.service";
 
 const Questionnaire = () => {
+  const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [submissionData, setSubmissionData] = useState(null);
@@ -118,7 +120,6 @@ const Questionnaire = () => {
     setStep(1);
   };
   const handleSubmit = () => {
-
     // Prepare connections data based on current selectedOptions
     const preparedConnections = questions
       .map((questionText, questionIndex) => {
@@ -149,21 +150,36 @@ const Questionnaire = () => {
     console.log("Submitting data:", jsonData);
     // Here you would send jsonData to your backend API
   };
-  const [submitSuccess, setSubmitSuccess] = useState(false);
   useEffect(() => {
     if (submissionData) {
       // Make your HTTP request here with submissionData
-      post('/api', submissionData).then(response => {
-        // handle response
-        console.log(response);
-        setSubmitSuccess(true);
-      }).catch(error => {
-        // handle error
-        setSubmitSuccess(true);
-        console.error(error);
-      });
+      post("/api", submissionData)
+        .then((response) => {
+          // handle response
+          const userIdToNameMapping = {};
+          people.forEach((person) => {
+            userIdToNameMapping[person.userId] = person.name.trim();
+          });
+
+          // Navigate to the result page with the response data and mapping
+          navigate("/result", {
+            state: { userIdToNameMapping },
+          });
+        })
+        .catch((error) => {
+          console.error(error);
+          const userIdToNameMapping = {};
+          people.forEach((person) => {
+            userIdToNameMapping[person.userId] = person.name.trim();
+          });
+          console.log(userIdToNameMapping);
+          // Navigate to the result page with the response data and mapping
+          navigate("/result", {
+            state: { responseData: userIdToNameMapping },
+          });
+        });
     }
-  }, [submissionData]);
+  }, [submissionData, navigate]);
 
   useEffect(() => {
     // Function to determine if an update is needed
@@ -233,7 +249,6 @@ const Questionnaire = () => {
               setCurrentQuestionIndex={setCurrentQuestionIndex}
               handleBack={handleBack}
               handleSubmit={handleSubmit}
-              submitSuccess={submitSuccess}
             />
           )}
         </Box>

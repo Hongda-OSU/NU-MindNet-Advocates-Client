@@ -181,43 +181,6 @@ const Questions = ({
           </Button>
         )}
       </Box>
-      <Modal
-        open={submitSuccess}
-        onClose={() => {}} // Optionally handle close event
-        aria-labelledby="submission-success-modal"
-        aria-describedby="submission-success-message"
-      >
-        <Box
-          sx={{
-            ...modalStyle,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <Typography
-            id="submission-success-modal"
-            variant="h6"
-            component="h2"
-            sx={{ textAlign: "center", width: "100%" }}
-          >
-            Submission Successful!
-          </Typography>
-          <Typography
-            id="submission-success-message"
-            sx={{ mt: 2, textAlign: "center", width: "100%" }}
-          >
-            Go back to homepage to check out the result.
-          </Typography>
-          <Button
-            variant="contained"
-            sx={{ mt: 2 }} // justifyContent and alignItems removed
-            onClick={() => (window.location.href = "/")}
-          >
-            Go Back to Homepage
-          </Button>
-        </Box>
-      </Modal>
 
       <Modal
         open={showConfirmation}
