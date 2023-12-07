@@ -9,6 +9,7 @@ import {
   FormControlLabel,
   Checkbox,
   Button,
+  Modal,
 } from "@mui/material";
 
 const Questions = ({
@@ -20,7 +21,30 @@ const Questions = ({
   setCurrentQuestionIndex,
   handleBack,
   handleSubmit,
+  submitSuccess,
 }) => {
+  const modalStyle = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 400,
+    bgcolor: "background.paper",
+    boxShadow: 24,
+    p: 4,
+    outline: "none",
+  };
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const handlePreSubmit = (event) => {
+    event.preventDefault();
+    setShowConfirmation(true);
+  };
+
+  const handleConfirmSubmit = () => {
+    setShowConfirmation(false);
+    handleSubmit(); // Call the passed handleSubmit function
+  };
+
   // Placeholder function for handling checkbox changes
   const handleCheckboxChange = (
     sourceUserId,
@@ -152,11 +176,57 @@ const Questions = ({
       </Box>
       <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 2 }}>
         {currentQuestionIndex === questions.length - 1 && (
-          <Button onClick={handleSubmit} variant="contained">
+          <Button onClick={handlePreSubmit} variant="contained">
             Submit
           </Button>
         )}
       </Box>
+
+      <Modal
+        open={showConfirmation}
+        onClose={() => setShowConfirmation(false)}
+        aria-labelledby="confirm-submission-modal"
+        aria-describedby="confirm-submission-message"
+      >
+        <Box sx={modalStyle}>
+          {/* <Typography
+            id="confirm-submission-modal"
+            style={{ textAlign: "center" }}
+            variant="h6"
+            component="h2"
+          >
+            Are you sure?
+          </Typography> */}
+          <Typography id="confirm-submission-message" sx={{ mt: 2 }}>
+            Please make sure that you have filled in all the information and
+            ready to submit.
+          </Typography>
+          <Box
+            sx={{
+              display: "flex",
+              mt: 2,
+              justifyContent: "center",
+              alignItems: "center",
+              gap: 1, // You can use gap to set a consistent space between items
+            }}
+          >
+            <Button
+              variant="contained"
+              sx={{ mt: 2 }} // Removed mr: 2 to reduce space between buttons
+              onClick={handleConfirmSubmit}
+            >
+              Submit
+            </Button>
+            <Button
+              variant="outlined"
+              sx={{ mt: 2 }}
+              onClick={() => setShowConfirmation(false)}
+            >
+              No
+            </Button>
+          </Box>
+        </Box>
+      </Modal>
     </Container>
   );
 };
