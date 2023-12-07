@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Container,
   Box,
@@ -14,6 +14,8 @@ import {
 const Questions = ({
   people,
   questions,
+  selectedOptions,
+  setSelectedOptions,
   currentQuestionIndex,
   setCurrentQuestionIndex,
   handleBack,
@@ -21,11 +23,32 @@ const Questions = ({
 }) => {
   // Placeholder function for handling checkbox changes
   const handleCheckboxChange = (
-    personIndex,
+    sourceUserId,
     questionIndex,
-    selectedPersonIndex
+    targetUserId,
+    isChecked
   ) => {
-    // Logic to handle checkbox change
+    setSelectedOptions((prevSelectedOptions) => {
+      const updatedOptions = { ...prevSelectedOptions };
+      const questionOptions = updatedOptions[sourceUserId] || {};
+      const targetOptions = questionOptions[questionIndex] || [];
+
+      if (isChecked) {
+        // Add the targetUserId if it's not already in the array
+        if (!targetOptions.includes(targetUserId)) {
+          questionOptions[questionIndex] = [...targetOptions, targetUserId];
+        }
+      } else {
+        // Remove the targetUserId
+        questionOptions[questionIndex] = targetOptions.filter(
+          (id) => id !== targetUserId
+        );
+      }
+
+      updatedOptions[sourceUserId] = questionOptions;
+
+      return updatedOptions;
+    });
   };
 
   return (
@@ -39,7 +62,7 @@ const Questions = ({
           >
             Edit People Info
           </Button>
-          <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 0.5 }}>
+          <Typography variant="h6" sx={{ fontWeight: "bold", mb: 0.5 }}>
             Questions
           </Typography>
           <List>
@@ -67,7 +90,7 @@ const Questions = ({
             <Box key={personIndex} sx={{ mb: 2 }}>
               <Typography variant="h6" gutterBottom>
                 {questions[currentQuestionIndex]
-                  .split("this person")
+                  .split("You")
                   .map((part, index, parts) =>
                     index < parts.length - 1 ? (
                       <React.Fragment key={index}>
@@ -82,26 +105,46 @@ const Questions = ({
                   )}
               </Typography>
 
-              <FormGroup>
+              <FormGroup
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  flexWrap: "wrap",
+                  gap: 2,
+                }}
+              >
                 {people
                   .filter((_, filterIndex) => filterIndex !== personIndex)
-                  .map((option, optionIndex) => (
-                    <FormControlLabel
-                      key={optionIndex}
-                      control={
-                        <Checkbox
-                          onChange={() =>
-                            handleCheckboxChange(
-                              personIndex,
-                              currentQuestionIndex,
-                              optionIndex
-                            )
-                          }
-                        />
-                      }
-                      label={option.name || `Person ${optionIndex + 1}`}
-                    />
-                  ))}
+                  .map((option) => {
+                    const isSelected =
+                      selectedOptions[people[personIndex].userId] &&
+                      selectedOptions[people[personIndex].userId][
+                        currentQuestionIndex
+                      ] &&
+                      selectedOptions[people[personIndex].userId][
+                        currentQuestionIndex
+                      ].includes(option.userId);
+
+                    return (
+                      <FormControlLabel
+                        key={option.userId}
+                        control={
+                          <Checkbox
+                            checked={isSelected}
+                            onChange={(event) =>
+                              handleCheckboxChange(
+                                people[personIndex].userId,
+                                currentQuestionIndex,
+                                option.userId,
+                                event.target.checked
+                              )
+                            }
+                          />
+                        }
+                        label={option.name || `Person ${option.userId}`}
+                      />
+                    );
+                  })}
               </FormGroup>
             </Box>
           ))}
