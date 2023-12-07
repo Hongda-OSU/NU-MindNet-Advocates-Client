@@ -117,8 +117,7 @@ const Questionnaire = () => {
   const handleBack = () => {
     setStep(1);
   };
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  const handleSubmit = () => {
 
     // Prepare connections data based on current selectedOptions
     const preparedConnections = questions
@@ -150,14 +149,17 @@ const Questionnaire = () => {
     console.log("Submitting data:", jsonData);
     // Here you would send jsonData to your backend API
   };
+  const [submitSuccess, setSubmitSuccess] = useState(false);
   useEffect(() => {
     if (submissionData) {
       // Make your HTTP request here with submissionData
       post('/api', submissionData).then(response => {
         // handle response
         console.log(response);
+        setSubmitSuccess(true);
       }).catch(error => {
         // handle error
+        setSubmitSuccess(true);
         console.error(error);
       });
     }
@@ -231,6 +233,7 @@ const Questionnaire = () => {
               setCurrentQuestionIndex={setCurrentQuestionIndex}
               handleBack={handleBack}
               handleSubmit={handleSubmit}
+              submitSuccess={submitSuccess}
             />
           )}
         </Box>
