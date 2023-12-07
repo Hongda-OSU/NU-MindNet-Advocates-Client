@@ -189,6 +189,10 @@ const Result = () => {
                   <span className="network-visualization-description">
                     {DESCRIPTIONS[resultIndex]}
                   </span>
+                  <span className="network-visualization-user-mapping">
+                    Use User Mapping aids in understanding the nodes represented
+                    in our visual display!
+                  </span>
                 </div>
               </div>
               <div className="result-explaination-container">
