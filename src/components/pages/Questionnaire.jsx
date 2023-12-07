@@ -163,7 +163,7 @@ const Questionnaire = () => {
 
           // Navigate to the result page with the response data and mapping
           navigate("/result", {
-            state: { userIdToNameMapping },
+            state: { mapping: userIdToNameMapping },
           });
         })
         .catch((error) => {
@@ -175,7 +175,7 @@ const Questionnaire = () => {
           console.log(userIdToNameMapping);
           // Navigate to the result page with the response data and mapping
           navigate("/result", {
-            state: { responseData: userIdToNameMapping },
+            state: { mapping: userIdToNameMapping },
           });
         });
     }
