@@ -2,6 +2,7 @@ import React from "react";
 import {
   TextField,
   Button,
+  ButtonGroup,
   Typography,
   Box,
   RadioGroup,
@@ -86,7 +87,7 @@ const PersonInfo = ({
         Please fill in the list below (Min of 3 is required).
       </Typography>
       {people.slice(1).map((person, index) => (
-        <Card variant="outlined" sx={{ mb: 2 }}>
+        <Card variant="outlined" key={person.userId} sx={{ mb: 2 }}>
           <CardContent>
             <TextField
               label={`Person ${index + 1} Name`}
@@ -147,7 +148,7 @@ const PersonInfo = ({
                     const newAge = e.target.value;
                     // Check if the newAge is within the 0-150 range
                     if (newAge >= 0 && newAge <= 150) {
-                      handlePersonInputChange(index+1, "age", newAge);
+                      handlePersonInputChange(index + 1, "age", newAge);
                     }
                   }}
                   margin="normal"
@@ -158,13 +159,28 @@ const PersonInfo = ({
           </CardContent>
         </Card>
       ))}
-      <Box sx={{ display: "flex", justifyContent: "space-between", mt: 2 }}>
-        <Box sx={{ display: "flex", gap: "16px" }}>
-          <Button onClick={handleAddPerson} variant="contained">
-            Add Person
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          mt: 2,
+          alignItems: "center",
+        }}
+      >
+        <Box>
+          <Button
+            onClick={handleAddPerson}
+            variant="contained"
+            sx={{ width: "100px", mr: 1 }}
+          >
+            Add
           </Button>
-          <Button onClick={handleDeletePerson} variant="contained">
-            Delete Person
+          <Button
+            onClick={handleDeletePerson}
+            variant="contained"
+            sx={{ width: "100px" }}
+          >
+            Delete
           </Button>
         </Box>
         <Button onClick={handleNext} variant="contained" color="primary">
