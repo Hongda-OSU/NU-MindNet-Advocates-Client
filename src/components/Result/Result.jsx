@@ -19,6 +19,7 @@ import {
   EIGENVECTOR_CENTRALITY,
   RECIPROCITY,
 } from "../Data/constant";
+import { useNavigate, useLocation } from "react-router-dom";
 import "./Result.less";
 
 const test_data = {
@@ -59,6 +60,9 @@ const test_image = {
 
 const Result = () => {
   const levels = ["high", "medium", "low"];
+  const navigate = useNavigate();
+  const location = useLocation();
+  const userMapping = location.state?.mapping;
 
   const [question, setQuestion] = useState(QUESTIONS[0]);
   const [degreeLevel, setDegreeLevel] = useState(test_data[0].degree);
@@ -106,6 +110,13 @@ const Result = () => {
     setResultImage(test_image[questionIndex][index]);
   };
 
+  const userMappingList = Object.entries(userMapping).map(([id, name]) => (
+    <div key={id} className="user-mapping-item">
+      <span className="user-mapping-id">{`User ID: ${id}`}</span>
+      <span className="user-mapping-name">{`Name: ${name}`}</span>
+    </div>
+  ));
+
   return (
     <>
       <PhotoProvider>
@@ -141,6 +152,10 @@ const Result = () => {
                 </ListItem>
               ))}
             </List>
+            <div className="result-sidebar-user-mapping-container">
+              <p className="result-sidebar-user-mapping">User Mapping</p>
+            </div>
+            <div className="user-mapping-container">{userMappingList}</div>
           </section>
           <section className="result-container">
             <div className="result-question-content-container">
@@ -173,6 +188,10 @@ const Result = () => {
                   </PhotoView>
                   <span className="network-visualization-description">
                     {DESCRIPTIONS[resultIndex]}
+                  </span>
+                  <span className="network-visualization-user-mapping">
+                    Use User Mapping aids in understanding the nodes represented
+                    in our visual display!
                   </span>
                 </div>
               </div>

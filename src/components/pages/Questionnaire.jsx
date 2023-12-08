@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Header from "../Header/Header";
 import PersonInfo from "../Questionnaire/PersonInfo";
 import Questions from "../Questionnaire/Questions";
-import { post } from "../http/http.service";
+import { postUserDataAndGetImages } from "../http/http.request";
 
 const Questionnaire = () => {
   const navigate = useNavigate();
@@ -86,6 +86,7 @@ const Questionnaire = () => {
     "Who do you think You will most likely consider as a potential roommate either living in university dorms or living in one apartment off-campus?",
     "Who do you believe You are most likely to partner with for a collaborative project?",
   ];
+
   const [selectedOptions, setSelectedOptions] = useState(() => {
     const initialSelections = {};
     people.forEach((person) => {
@@ -96,6 +97,7 @@ const Questionnaire = () => {
     });
     return initialSelections;
   });
+
   const handlePersonInputChange = (index, name, value) => {
     const newPeople = [...people];
     newPeople[index][name] = value;
@@ -126,6 +128,7 @@ const Questionnaire = () => {
   const handleBack = () => {
     setStep(1);
   };
+
   const handleSubmit = () => {
     // Prepare connections data based on current selectedOptions
     const preparedConnections = questions
@@ -157,17 +160,17 @@ const Questionnaire = () => {
     console.log("Submitting data:", jsonData);
     // Here you would send jsonData to your backend API
   };
+
   useEffect(() => {
     if (submissionData) {
       // Make your HTTP request here with submissionData
-      post("/api", submissionData)
+      postUserDataAndGetImages("/api", submissionData)
         .then((response) => {
           // handle response
           const userIdToNameMapping = {};
           people.forEach((person) => {
             userIdToNameMapping[person.userId] = person.name.trim();
           });
-
           // Navigate to the result page with the response data and mapping
           navigate("/result", {
             state: { mapping: userIdToNameMapping },
@@ -179,8 +182,6 @@ const Questionnaire = () => {
           people.forEach((person) => {
             userIdToNameMapping[person.userId] = person.name.trim();
           });
-          console.log(userIdToNameMapping);
-          // Navigate to the result page with the response data and mapping
           navigate("/result", {
             state: { mapping: userIdToNameMapping },
           });
