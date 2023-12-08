@@ -19,60 +19,29 @@ import {
   EIGENVECTOR_CENTRALITY,
   RECIPROCITY,
 } from "../Data/constant";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import "./Result.less";
-
-const test_data = {
-  0: { degree: 0, closeness: 1, eigenvector: 2, reciprocity: -1 },
-  1: { degree: 2, closeness: 2, eigenvector: 1, reciprocity: -1 },
-  2: { degree: 1, closeness: 0, eigenvector: 2, reciprocity: -1 },
-  3: { degree: 2, closeness: 0, eigenvector: 1, reciprocity: -1 },
-  4: { degree: 2, closeness: 1, eigenvector: 0, reciprocity: 1 },
-};
-
-const test_image = {
-  0: [
-    "https://raw.githubusercontent.com/Hongda-OSU/PicGo-2.3.1/master/imgtest_directed_small.jpg",
-    "https://raw.githubusercontent.com/Hongda-OSU/PicGo-2.3.1/master/imgtest_directed_medium.jpg",
-    "https://raw.githubusercontent.com/Hongda-OSU/PicGo-2.3.1/master/imgtest_directed_large.jpg",
-  ],
-  1: [
-    "https://raw.githubusercontent.com/Hongda-OSU/PicGo-2.3.1/master/imgtest_undirected_small.jpg",
-    "https://raw.githubusercontent.com/Hongda-OSU/PicGo-2.3.1/master/imgtest_undirected_medium.jpg",
-    "https://raw.githubusercontent.com/Hongda-OSU/PicGo-2.3.1/master/imgtest_undirected_large.jpg",
-  ],
-  2: [
-    "https://raw.githubusercontent.com/Hongda-OSU/PicGo-2.3.1/master/imgtest_directed_small.jpg",
-    "https://raw.githubusercontent.com/Hongda-OSU/PicGo-2.3.1/master/imgtest_directed_medium.jpg",
-    "https://raw.githubusercontent.com/Hongda-OSU/PicGo-2.3.1/master/imgtest_directed_large.jpg",
-  ],
-  3: [
-    "https://raw.githubusercontent.com/Hongda-OSU/PicGo-2.3.1/master/imgtest_undirected_small.jpg",
-    "https://raw.githubusercontent.com/Hongda-OSU/PicGo-2.3.1/master/imgtest_undirected_medium.jpg",
-    "https://raw.githubusercontent.com/Hongda-OSU/PicGo-2.3.1/master/imgtest_undirected_large.jpg",
-  ],
-  4: [
-    "https://raw.githubusercontent.com/Hongda-OSU/PicGo-2.3.1/master/imgtest_directed_small.jpg",
-    "https://raw.githubusercontent.com/Hongda-OSU/PicGo-2.3.1/master/imgtest_directed_medium.jpg",
-    "https://raw.githubusercontent.com/Hongda-OSU/PicGo-2.3.1/master/imgtest_directed_large.jpg",
-  ],
-};
 
 const Result = () => {
   const levels = ["high", "medium", "low"];
-  const navigate = useNavigate();
   const location = useLocation();
   const userMapping = location.state?.mapping;
+  const imageUrls = location.state?.imageUrls;
+  const statistics = location.state?.statistics;
 
   const [question, setQuestion] = useState(QUESTIONS[0]);
-  const [degreeLevel, setDegreeLevel] = useState(test_data[0].degree);
-  const [closenessLevel, setClosenessLevel] = useState(test_data[0].closeness);
+  const [degreeLevel, setDegreeLevel] = useState(statistics["Q1"].degree_level);
+  const [closenessLevel, setClosenessLevel] = useState(
+    statistics["Q1"].closeness_level
+  );
   const [eigenvectorLevel, setEigenvectorLevel] = useState(
-    test_data[0].eigenvector
+    statistics["Q1"].eigen_centrality_level
   );
   const [reciprocityLevel, setReciprocityLevel] = useState(
-    test_data[0].reciprocity
+    statistics["Q1"].reciprocity_level ?? -1
   );
+  const [resultIndex, setResultIndex] = useState(0);
+  const [resultImage, setResultImage] = useState(imageUrls["Q1"][0]);
 
   const getLevelDescription = (level, criteria) => criteria[levels[level]];
 
@@ -87,27 +56,26 @@ const Result = () => {
     }
   };
 
-  const [resultIndex, setResultIndex] = useState(0);
-  const [resultImage, setResultImage] = useState(test_image[0][0]);
-
   const handleQuestionChange = (index) => {
+    const questionKey = `Q${index + 1}`;
     setQuestion(QUESTIONS[index]);
 
     setResultIndex(0);
-    setResultImage(test_image[index][0]);
+    setResultImage(imageUrls[questionKey][0]);
 
-    const levels = test_data[index];
-    setDegreeLevel(levels.degree);
-    setClosenessLevel(levels.closeness);
-    setEigenvectorLevel(levels.eigenvector);
-    setReciprocityLevel(levels.reciprocity);
+    const currentStats = statistics[questionKey];
+    setDegreeLevel(currentStats.degree_level);
+    setClosenessLevel(currentStats.closeness_level);
+    setEigenvectorLevel(currentStats.eigen_centrality_level);
+    setReciprocityLevel(currentStats.reciprocity_level ?? -1);
   };
 
   const handleVisualizationTabChange = (e, index) => {
     e.preventDefault();
     setResultIndex(index);
     const questionIndex = QUESTIONS.findIndex((q) => q === question);
-    setResultImage(test_image[questionIndex][index]);
+    const questionKey = `Q${questionIndex + 1}`;
+    setResultImage(imageUrls[questionKey][index]);
   };
 
   const userMappingList = Object.entries(userMapping).map(([id, name]) => (

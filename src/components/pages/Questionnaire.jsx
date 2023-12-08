@@ -5,12 +5,15 @@ import Header from "../Header/Header";
 import PersonInfo from "../Questionnaire/PersonInfo";
 import Questions from "../Questionnaire/Questions";
 import { postUserDataAndGetImages } from "../http/http.request";
+import { ColorRing } from "react-loader-spinner";
+import "./Questionnaire.less";
 
 const Questionnaire = () => {
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [submissionData, setSubmissionData] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const initialPeople = [
     { userId: 0, name: "", gender: "", age: "" },
@@ -163,10 +166,10 @@ const Questionnaire = () => {
 
   useEffect(() => {
     if (submissionData) {
+      setIsLoading(true);
       // Make your HTTP request here with submissionData
       postUserDataAndGetImages("/visualize", submissionData)
-        .then((response) => {
-          console.log(response)
+        .then(({ imageUrls, statistics }) => {
           // handle response
           const userIdToNameMapping = {};
           people.forEach((person) => {
@@ -174,11 +177,18 @@ const Questionnaire = () => {
           });
           // Navigate to the result page with the response data and mapping
           navigate("/result", {
-            state: { mapping: userIdToNameMapping },
+            state: {
+              mapping: userIdToNameMapping,
+              imageUrls: imageUrls,
+              statistics: statistics,
+            },
           });
         })
         .catch((error) => {
           console.error(error);
+        })
+        .finally(() => {
+          setIsLoading(false);
         });
     }
   }, [submissionData, navigate]);
@@ -231,6 +241,24 @@ const Questionnaire = () => {
             mt: 4,
           }}
         >
+          {isLoading && (
+            <div className="loading-overlay">
+              <span className="loading-overlay-title">Waiting results from AWS</span>
+              <ColorRing
+                visible={true}
+                height="280"
+                width="280"
+                ariaLabel="blocks-loading"
+                wrapperStyle={{}}
+                wrapperClass="blocks-wrapper"
+                colors={["#e15b64", "#f47e60", "#f8b26a", "#abbd81", "#849b87"]}
+              />
+              <span className="loading-overlay-slogan">
+                Please be patient and avoid refreshing the page. This process
+                may take a while.
+              </span>
+            </div>
+          )}
           {step === 1 && (
             <PersonInfo
               people={people}
