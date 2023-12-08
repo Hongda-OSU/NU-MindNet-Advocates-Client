@@ -15,13 +15,13 @@ import {
 const Questions = ({
   people,
   questions,
+  questions_env,
   selectedOptions,
   setSelectedOptions,
   currentQuestionIndex,
   setCurrentQuestionIndex,
   handleBack,
   handleSubmit,
-  submitSuccess,
 }) => {
   const modalStyle = {
     position: "absolute",
@@ -110,6 +110,20 @@ const Questions = ({
 
         {/* Right side: Questions and checkbox options for each person */}
         <Box sx={{ width: "75%" }}>
+          {/* Right side: Questions and checkbox options for each person */}
+          <Box
+            sx={{
+              border: "2px solid #e0e0e0",
+              padding: "8px",
+              marginBottom: "16px",
+            }}
+          >
+            <Typography variant="h6">
+              {questions_env[currentQuestionIndex]}
+            </Typography>
+          </Box>
+          {/* This Box will act as a blank line */}
+          <Box sx={{ height: "16px" }}></Box>
           {people.map((person, personIndex) => (
             <Box key={personIndex} sx={{ mb: 2 }}>
               <Typography variant="h6" gutterBottom>

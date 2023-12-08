@@ -72,12 +72,19 @@ const Questionnaire = () => {
     }
   };
 
+  const questions_env = [
+    "Imagine it's a Friday night and You are planning a fun party.",
+    "Considering the diverse needs of university students, such as course selection, major determination, and the pursuit of career opportunities.",
+    "As a university student, you may encounter difficulties in your personal romantic relationships.",
+    "Given the unique challenges and opportunities of university life.",
+    "As college students, team projects are an integral part of your academic life.",
+  ];
   const questions = [
-    "Imagine it's a Friday night and You are planning a fun party. Who do you think would be their top pick for an invite?",
-    "Considering the diverse needs of university students, such as course selection, major determination, and the pursuit of career opportunities, who is likely to be the primary source of guidance for You in navigating these challenges?",
-    "As a university student, you may encounter difficulties in your personal romantic relationships. In these situations, whom would You turn to for a discussion or guidance?",
-    "Given the unique challenges and opportunities of university life, who do you think You will most likely consider as a potential roommate either living in university dorms or living in one apartment off-campus?",
-    "As college students, team projects are an integral part of your academic life. Who do you believe You are most likely to partner with for a collaborative project?",
+    "Who do you think would be You top pick for an invite?",
+    "Who is likely to be the primary source of guidance for You in navigating these challenges?",
+    "Whom would You turn to for a discussion or guidance?",
+    "Who do you think You will most likely consider as a potential roommate either living in university dorms or living in one apartment off-campus?",
+    "Who do you believe You are most likely to partner with for a collaborative project?",
   ];
 
   const [selectedOptions, setSelectedOptions] = useState(() => {
@@ -238,6 +245,7 @@ const Questionnaire = () => {
             <Questions
               people={people}
               questions={questions}
+              questions_env={questions_env}
               selectedOptions={selectedOptions}
               setSelectedOptions={setSelectedOptions}
               currentQuestionIndex={currentQuestionIndex}
