@@ -150,15 +150,16 @@ const Questionnaire = () => {
 
     // Instead of sending the data directly, set it in the state
     setSubmissionData(jsonData);
-    console.log("Submitting data:", jsonData);
+    // console.log("Submitting data:", jsonData);
     // Here you would send jsonData to your backend API
   };
 
   useEffect(() => {
     if (submissionData) {
       // Make your HTTP request here with submissionData
-      postUserDataAndGetImages("/api", submissionData)
+      postUserDataAndGetImages("/visualize", submissionData)
         .then((response) => {
+          console.log(response)
           // handle response
           const userIdToNameMapping = {};
           people.forEach((person) => {
@@ -171,13 +172,6 @@ const Questionnaire = () => {
         })
         .catch((error) => {
           console.error(error);
-          const userIdToNameMapping = {};
-          people.forEach((person) => {
-            userIdToNameMapping[person.userId] = person.name.trim();
-          });
-          navigate("/result", {
-            state: { mapping: userIdToNameMapping },
-          });
         });
     }
   }, [submissionData, navigate]);

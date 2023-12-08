@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseURL = "";
+const baseURL = "https://jx3j3qu3gk.execute-api.us-east-2.amazonaws.com/prod";
 
 const baseHeaders = {
   "Content-Type": "application/json",
@@ -14,7 +14,7 @@ const http = axios.create({
 const sendHttpRequest = async (route, method, data = {}, headers = {}) => {
   try {
     const response = await http({
-      url: baseURL + route,
+      url: route,
       method,
       headers: { ...baseHeaders, ...headers },
       data,
